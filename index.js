@@ -101,6 +101,7 @@ function filterUnfundedOnly() {
 
     // use filter() to get a list of games that have not yet met their goal
     let unmet = GAMES_JSON.filter((game) => game.pledged < game.goal)
+    console.log(unmet.length)
 
     // use the function we previously created to add the unfunded games to the DOM
     addGamesToPage(unmet)
@@ -147,13 +148,17 @@ allBtn.addEventListener('click', showAllGames)
 const descriptionContainer = document.getElementById("description-container");
 
 // use filter or reduce to count the number of unfunded games
-
+let unfunded = GAMES_JSON.filter((game) => game.pledged < game.goal)
 
 // create a string that explains the number of unfunded games using the ternary operator
+let oneUnfunded = `A total of $100,000 has been raised for 4 games. Currently ${unfunded.length} game remains unfunded.`
+let manyUnfunded =`A total of $${totalRaised.toLocaleString('en-US')} has been raised for 4 games! Currently ${unfunded.length} games remains unfunded.`
 
-
+let desc = `${unfunded.length === 1 ? oneUnfunded : manyUnfunded}`
 // create a new DOM element containing the template string and append it to the description container
-
+const p = document.createElement('p')
+p.innerHTML = desc
+descriptionContainer.append(p)
 /************************************************************************************
  * Challenge 7: Select & display the top 2 games
  * Skills used: spread operator, destructuring, template literals, sort 
@@ -167,7 +172,16 @@ const sortedGames =  GAMES_JSON.sort( (item1, item2) => {
 });
 
 // use destructuring and the spread operator to grab the first and second games
-
+let [a, b, ...rest] = sortedGames
+console.log(a.name)
+console.log(b)
+console.log(sortedGames)
 // create a new element to hold the name of the top pledge game, then append it to the correct element
+const topG = document.createElement('h4')
+topG.innerHTML = a.name
+firstGameContainer.append(topG)
 
 // do the same for the runner up item
+const runnerG = document.createElement('h4')
+runnerG.innerHTML = b.name
+secondGameContainer.append(runnerG)
